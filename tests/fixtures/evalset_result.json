@@ -1,0 +1,146 @@
+{
+  "eval_set_result_id": "fixture",
+  "eval_set_id": "001-colombia-guide",
+  "eval_case_results": [
+    {
+      "eval_id": "us1-sc1",
+      "final_eval_status": 2,
+      "eval_metric_result_per_invocation": [
+        {
+          "eval_metric_results": [
+            {
+              "metric_name": "final_response_match_v2",
+              "score": 0.2,
+              "threshold": 0.8
+            },
+            {
+              "metric_name": "tool_call_count_v1",
+              "score": 2.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "inference_call_count_v1",
+              "score": 3.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "token_usage_v1",
+              "score": 16151.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "invocation_duration_v1",
+              "score": 50.992,
+              "threshold": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "eval_id": "us1-sc2",
+      "final_eval_status": 1,
+      "eval_metric_result_per_invocation": [
+        {
+          "eval_metric_results": [
+            {
+              "metric_name": "final_response_match_v2",
+              "score": 1.0,
+              "threshold": 0.8
+            },
+            {
+              "metric_name": "tool_call_count_v1",
+              "score": 2.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "inference_call_count_v1",
+              "score": 3.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "token_usage_v1",
+              "score": 6231.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "invocation_duration_v1",
+              "score": 40.792,
+              "threshold": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "eval_id": "us3-sc1",
+      "final_eval_status": 1,
+      "eval_metric_result_per_invocation": [
+        {
+          "eval_metric_results": [
+            {
+              "metric_name": "final_response_match_v2",
+              "score": 1.0,
+              "threshold": 0.8
+            },
+            {
+              "metric_name": "tool_call_count_v1",
+              "score": 0.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "inference_call_count_v1",
+              "score": 1.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "token_usage_v1",
+              "score": 1154.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "invocation_duration_v1",
+              "score": 17.881,
+              "threshold": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "eval_id": "us2-sc1",
+      "final_eval_status": 1,
+      "eval_metric_result_per_invocation": [
+        {
+          "eval_metric_results": [
+            {
+              "metric_name": "final_response_match_v2",
+              "score": 1.0,
+              "threshold": 0.8
+            },
+            {
+              "metric_name": "tool_call_count_v1",
+              "score": 1.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "inference_call_count_v1",
+              "score": 2.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "token_usage_v1",
+              "score": 2545.0,
+              "threshold": null
+            },
+            {
+              "metric_name": "invocation_duration_v1",
+              "score": 21.711,
+              "threshold": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

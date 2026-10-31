@@ -23,6 +23,12 @@ provides:
     - name: "speckit.adk.evalset"
       file: "commands/evalset.md"
       description: "Generate an ADK evalset from the acceptance scenarios in spec.md"
+    - name: "speckit.adk.eval"
+      file: "commands/eval.md"
+      description: "Run adk eval and map failures to user stories"
+    - name: "speckit.adk.review"
+      file: "commands/review.md"
+      description: "Check traceability between spec, plan and evalset"
 
   templates:
     - name: "adk-plan-section"
@@ -31,6 +37,20 @@ provides:
     - name: "adk-evalset"
       file: "templates/adk-evalset.template.json"
       description: "Skeleton of an ADK evalset file"
+
+  scripts:
+    - name: "validate-evalset"
+      file: "scripts/validate_evalset.py"
+      description: "Validate the structure and ids of an evalset"
+      runtimes: ["python"]
+    - name: "check-traceability"
+      file: "scripts/check_traceability.py"
+      description: "Compare spec scenarios with eval cases"
+      runtimes: ["python"]
+    - name: "summarize-results"
+      file: "scripts/summarize_results.py"
+      description: "Summarize adk eval results by eval id"
+      runtimes: ["python"]
 
   config:
     - name: "adk-config.yml"
@@ -49,6 +69,11 @@ hooks:
     optional: true
     prompt: "Generate the ADK evalset from the spec scenarios?"
     description: "Generate the evaluation set"
+  after_implement:
+    command: "speckit.adk.eval"
+    optional: true
+    prompt: "Run the ADK evaluation now? It calls the model."
+    description: "Evaluate the implemented agent"
 
 tags:
   - "adk"

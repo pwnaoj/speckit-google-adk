@@ -9,7 +9,7 @@ authors = [{ name = "Joan" }]
 dependencies = []
 
 [dependency-groups]
-dev = ["pytest", "ruff"]
+dev = ["pytest", "pyyaml", "ruff"]
 
 [tool.ruff]
 line-length = 88
@@ -18,5 +18,10 @@ line-length = 88
 select = ["E", "F", "W", "I", "N", "D"]
 ignore = ["D203", "D213"]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]
+"examples/*/*/__init__.py" = ["D104", "F401"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["scripts"]
