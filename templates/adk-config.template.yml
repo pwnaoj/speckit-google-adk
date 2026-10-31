@@ -1,0 +1,17 @@
+# Google ADK extension configuration.
+# Copy of this file lives at .specify/extensions/adk/adk-config.yml
+
+# Folder of the agent package (contains __init__.py, agent.py and root_agent).
+# Leave empty to let the commands ask or infer it from plan.md.
+agent_dir: ""
+
+# Model for newly designed agents.
+model: "gemini-flash-latest"
+
+# Where evalset files are written, relative to the project root.
+eval_dir: "tests/eval"
+
+# Evaluation criteria written to test_config.json (local, no cloud service).
+criteria:
+  tool_trajectory_avg_score: 1.0
+  response_match_score: 0.8

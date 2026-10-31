@@ -1,0 +1,32 @@
+{
+  "eval_set_id": "<feature-dir-name>",
+  "name": "<feature title>",
+  "description": "Generated from spec.md acceptance scenarios.",
+  "eval_cases": [
+    {
+      "eval_id": "us1-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us1-sc1-inv1",
+          "user_content": {
+            "parts": [{"text": "<message that realizes the scenario's When>"}],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [{"text": "<expected outcome from the scenario's Then>"}],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "<agent folder name>",
+        "user_id": "test_user",
+        "state": {}
+      }
+    }
+  ]
+}

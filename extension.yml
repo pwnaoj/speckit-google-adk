@@ -1,0 +1,56 @@
+schema_version: "1.0"
+
+extension:
+  id: "adk"
+  name: "Google ADK"
+  version: "0.1.0"
+  description: "Spec-driven development of Google ADK agents: architecture planning and traceable evaluation sets."
+  author: "Joan"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=1.2.5"
+  tools:
+    - name: "google-adk"
+      version: ">=2.13.0"
+      required: false
+
+provides:
+  commands:
+    - name: "speckit.adk.design"
+      file: "commands/design.md"
+      description: "Add the ADK architecture section to plan.md"
+    - name: "speckit.adk.evalset"
+      file: "commands/evalset.md"
+      description: "Generate an ADK evalset from the acceptance scenarios in spec.md"
+
+  templates:
+    - name: "adk-plan-section"
+      file: "templates/adk-plan-section.md"
+      description: "ADK architecture section for plan.md"
+    - name: "adk-evalset"
+      file: "templates/adk-evalset.template.json"
+      description: "Skeleton of an ADK evalset file"
+
+  config:
+    - name: "adk-config.yml"
+      template: "templates/adk-config.template.yml"
+      description: "ADK extension configuration"
+      required: false
+
+hooks:
+  after_plan:
+    command: "speckit.adk.design"
+    optional: true
+    prompt: "Add the ADK architecture section to plan.md?"
+    description: "Design the ADK agent architecture"
+  after_tasks:
+    command: "speckit.adk.evalset"
+    optional: true
+    prompt: "Generate the ADK evalset from the spec scenarios?"
+    description: "Generate the evaluation set"
+
+tags:
+  - "adk"
+  - "agents"
+  - "evaluation"

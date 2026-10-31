@@ -1,0 +1,16 @@
+# Development-only files are not copied to the installed extension.
+.git/
+tests/
+docs/
+.github/
+.venv/
+.ruff_cache/
+.pytest_cache/
+.adk/
+pyproject.toml
+uv.lock
+.python-version
+.env
+.env.*
+.gitignore
+CHANGELOG.md
