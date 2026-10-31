@@ -15,8 +15,10 @@ Consider the user input before proceeding (if not empty).
 
 ## Steps
 
-1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-spec` from the
-   project root and read `FEATURE_DIR`. The feature name is its last path segment.
+1. Run the project's prerequisites script with `--json --require-spec` from the
+   project root: `.specify/scripts/bash/check-prerequisites.sh`, or
+   `python3 .specify/scripts/python/check_prerequisites.py` when
+   `.specify/init-options.json` has `"script": "py"`. Then read `FEATURE_DIR`. The feature name is its last path segment.
 2. Read `.specify/extensions/adk/adk-config.yml` for `agent_dir` and `eval_dir`. If
    `agent_dir` is empty, use the folder named under `### Agent package` in `plan.md`.
 3. Check that `<eval_dir>/<feature-name>.evalset.json` and `<eval_dir>/test_config.json`

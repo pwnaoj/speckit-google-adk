@@ -15,8 +15,10 @@ Consider the user input before proceeding (if not empty).
 
 ## Steps
 
-1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-spec` from the
-   project root and read `FEATURE_DIR`. The feature name is its last path segment.
+1. Run the project's prerequisites script with `--json --require-spec` from the
+   project root: `.specify/scripts/bash/check-prerequisites.sh`, or
+   `python3 .specify/scripts/python/check_prerequisites.py` when
+   `.specify/init-options.json` has `"script": "py"`. Then read `FEATURE_DIR`. The feature name is its last path segment.
 2. Read `.specify/extensions/adk/adk-config.yml` for `eval_dir`.
 3. Run `python3 .specify/extensions/adk/scripts/check_traceability.py
    FEATURE_DIR/spec.md <eval_dir>/<feature-name>.evalset.json` and report every

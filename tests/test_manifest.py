@@ -61,3 +61,10 @@ def test_template_and_script_names_are_lowercase_with_hyphens():
     for kind in ("templates", "scripts"):
         for item in provides.get(kind, []):
             assert pattern.match(item["name"]), item["name"]
+
+
+def test_commands_support_both_prerequisite_script_flavors():
+    for command in MANIFEST["provides"]["commands"]:
+        text = (ROOT / command["file"]).read_text(encoding="utf-8")
+        if "check-prerequisites.sh" in text:
+            assert "check_prerequisites.py" in text, command["file"]

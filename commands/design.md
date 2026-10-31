@@ -14,8 +14,10 @@ Consider the user input before proceeding (if not empty).
 
 ## Steps
 
-1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-spec` from the
-   project root and read `FEATURE_DIR` from the output. Stop with a clear message if
+1. Run the project's prerequisites script with `--json --require-spec` from the
+   project root: `.specify/scripts/bash/check-prerequisites.sh`, or
+   `python3 .specify/scripts/python/check_prerequisites.py` when
+   `.specify/init-options.json` has `"script": "py"`. Then read `FEATURE_DIR` from the output. Stop with a clear message if
    `spec.md` or `plan.md` is missing in `FEATURE_DIR`; for a missing `plan.md` suggest
    running the core plan command first.
 2. Read `FEATURE_DIR/spec.md`, `FEATURE_DIR/plan.md` and, if present,
