@@ -11,8 +11,10 @@ import re
 import sys
 from pathlib import Path
 
-STORY = re.compile(r"^#{2,4}\s*User Story\s+(\d+)\b", re.IGNORECASE)
-SCENARIO = re.compile(r"^\s*(\d+)\.\s+\*\*Given\*\*", re.IGNORECASE)
+STORY = re.compile(
+    r"^#{2,4}\s*(?:User Story|Historia de usuario)\s+(\d+)\b", re.IGNORECASE
+)
+SCENARIO = re.compile(r"^\s*(\d+)\.\s+\*\*(?:Given|Dado)\*\*", re.IGNORECASE)
 
 
 def scenario_ids(spec_text: str) -> list[str]:

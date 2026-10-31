@@ -31,3 +31,11 @@ def test_main_exit_codes(tmp_path, capsys):
     assert module.main(["x", spec, str(path)]) == 1
     assert "MISSING" in capsys.readouterr().out
     assert module.main(["x"]) == 2
+
+
+def test_spanish_keywords_are_recognised():
+    text = (
+        "### Historia de usuario 2 - Algo (Priority: P1)\n"
+        "1. **Dado** un estado, **Cuando** pasa algo, **Entonces** ocurre otra cosa\n"
+    )
+    assert module.scenario_ids(text) == ["us2-sc1"]
