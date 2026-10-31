@@ -2,6 +2,7 @@
 .git/
 tests/
 docs/
+examples/
 .github/
 .venv/
 .ruff_cache/

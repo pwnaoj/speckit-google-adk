@@ -1,0 +1,144 @@
+{
+  "eval_set_id": "001-colombia-guide",
+  "name": "Guía educativa de Colombia",
+  "description": "Generated from spec.md acceptance scenarios.",
+  "eval_cases": [
+    {
+      "eval_id": "us1-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us1-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué ciudades tiene el departamento de Boyacá?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "El agente lista ciudades de Boyacá obtenidas de API Colombia y las explica en tono educativo."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_guide",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us1-sc2",
+      "conversation": [
+        {
+          "invocation_id": "us1-sc2-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Cuáles son los atractivos turísticos del departamento de Santander?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "El agente presenta atractivos turísticos de Santander obtenidos de API Colombia."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_guide",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us2-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us2-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué moneda y qué idiomas se usan en Colombia?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "El agente responde con la moneda y los idiomas de Colombia obtenidos de API Colombia."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_country_info",
+                "args": {}
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_guide",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us3-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us3-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Cómo estará el clima mañana en Bogotá?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "El agente explica que no dispone de ese dato y sugiere temas que sí puede tratar, sin inventar información."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_guide",
+        "user_id": "test_user",
+        "state": {}
+      }
+    }
+  ]
+}
