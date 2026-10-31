@@ -36,7 +36,8 @@ Consider the user input before proceeding (if not empty).
 8. Write `FEATURE_DIR/eval-report.md` with a table (eval id, user story, scenario,
    status, score/threshold). The eval id `us<N>-sc<M>` gives the user story `N` and the
    scenario number `M` in `FEATURE_DIR/spec.md`. For every failed case, quote the scenario's *Then* from
-   `spec.md`, say what the agent answered (from the run output) and suggest a fix.
+   `spec.md`, say what the agent answered (the `answer:` line printed for each failed case in
+   step 7) and suggest a fix.
 
 ## Rules
 

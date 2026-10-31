@@ -15,10 +15,15 @@ def test_summarize_rows_sorted_with_status_and_metrics():
     assert "final_response_match_v2=0.20/0.8" in rows[0][2]
 
 
-def test_main_returns_one_when_a_case_failed(capsys):
+def test_failed_case_shows_the_answer_and_empty_is_flagged(capsys):
+    rows = module.summarize(json.loads(FIXTURE.read_text(encoding="utf-8")))
+    assert rows[0][3] == "(empty response)"
+    assert rows[3][3] == "No tengo datos del clima."
     assert module.main(["x", str(FIXTURE)]) == 1
     out = capsys.readouterr().out
     assert "Passed: 3  Failed: 1" in out
+    assert "answer: (empty response)" in out
+    assert "answer: No tengo" not in out
 
 
 def test_directory_uses_newest_result(tmp_path):

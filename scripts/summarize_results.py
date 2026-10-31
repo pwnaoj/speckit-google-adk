@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 STATUS = {1: "PASSED", 2: "FAILED", 3: "NOT_EVALUATED"}
+ANSWER_LIMIT = 300
 
 
 def latest_result(path: Path) -> Path | None:
@@ -39,13 +40,24 @@ def metric_text(case: dict) -> str:
     return ", ".join(parts)
 
 
-def summarize(result: dict) -> list[tuple[str, str, str]]:
-    """Return (eval_id, status, metrics) for every case, sorted by id."""
+def answer_text(case: dict) -> str:
+    """Return the agent's final answer of the first invocation, shortened."""
+    for invocation in case.get("eval_metric_result_per_invocation", []):
+        actual = invocation.get("actual_invocation") or {}
+        parts = (actual.get("final_response") or {}).get("parts") or [{}]
+        text = " ".join((parts[0].get("text") or "").split())
+        return text[:ANSWER_LIMIT] or "(empty response)"
+    return "(no invocation)"
+
+
+def summarize(result: dict) -> list[tuple[str, str, str, str]]:
+    """Return (eval_id, status, metrics, answer) for every case, sorted by id."""
     rows = [
         (
             case["eval_id"],
             status_name(case["final_eval_status"]),
             metric_text(case),
+            answer_text(case),
         )
         for case in result.get("eval_case_results", [])
     ]
@@ -67,8 +79,10 @@ def main(argv: list[str]) -> int:
         print(f"ERROR: cannot read {path}: {error}")
         return 1
     print(f"Result file: {path}")
-    for eval_id, status, metrics in rows:
+    for eval_id, status, metrics, answer in rows:
         print(f"{eval_id} | {status} | {metrics}")
+        if status != "PASSED":
+            print(f"    answer: {answer}")
     failed = [row for row in rows if row[1] != "PASSED"]
     print(f"Passed: {len(rows) - len(failed)}  Failed: {len(failed)}")
     return 1 if failed else 0

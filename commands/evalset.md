@@ -30,9 +30,10 @@ Consider the user input before proceeding (if not empty).
    - `final_response`: the expected outcome from the scenario's *Then*, short and
      checkable.
    - `intermediate_data.tool_uses`: the tool calls (`name`, `args`) the scenario
-     requires, using names from the plan. Include a call only when its name and all its
-     arguments are known; arguments resolved at runtime (such as ids returned by an
-     earlier call) are not known, so leave the list empty in that case.
+     requires, using names from the plan. Declare the calls of a case only when the whole
+     chain is known in advance. If any argument depends on the result of an earlier call
+     (such as an id returned by a lookup), leave the list empty for that case; do not
+     declare only part of the chain.
    - `session_input.app_name`: the name of the agent folder (`agent_dir`). If it is
      empty, use the folder named under `### Agent package` in `plan.md`; if that is not possible, ask the user.
 5. Write `<eval_dir>/<feature-dir-name>.evalset.json`, using the feature directory name
