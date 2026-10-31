@@ -1,8 +1,8 @@
 # Google ADK extension configuration.
-# Copy of this file lives at .specify/extensions/adk/adk-config.yml
+# The installed copy lives at .specify/extensions/adk/adk-config.yml
 
 # Folder of the agent package (contains __init__.py, agent.py and root_agent).
-# Leave empty to let the commands ask or infer it from plan.md.
+# Leave empty to use the folder proposed in the "Agent package" section of plan.md.
 agent_dir: ""
 
 # Model for newly designed agents.
@@ -11,7 +11,18 @@ model: "gemini-flash-latest"
 # Where evalset files are written, relative to the project root.
 eval_dir: "tests/eval"
 
-# Evaluation criteria written to test_config.json (local, no cloud service).
+# Criteria written to test_config.json. The default compares the meaning of the
+# answer with an LLM judge; it only needs GEMINI_API_KEY. Do not use
+# response_match_score for free-text answers: it compares words and scores
+# correct answers very low.
 criteria:
-  tool_trajectory_avg_score: 1.0
-  response_match_score: 0.8
+  final_response_match_v2:
+    threshold: 0.8
+    judge_model_options:
+      judge_model: "gemini-flash-latest"
+      num_samples: 1
+
+# Also check the tool calls (tool_trajectory_avg_score, match type IN_ORDER).
+# Enable it only when tool names and arguments are fully known in advance; ids
+# resolved at runtime, retries and repeated calls make it fail without a real error.
+check_tools: false

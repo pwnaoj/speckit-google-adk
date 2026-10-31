@@ -30,15 +30,16 @@ Consider the user input before proceeding (if not empty).
    - `final_response`: the expected outcome from the scenario's *Then*, short and
      checkable.
    - `intermediate_data.tool_uses`: the tool calls (`name`, `args`) the scenario
-     requires, using names from the plan. Leave it empty when the scenario implies none.
+     requires, using names from the plan. Include a call only when its name and all its
+     arguments are known; arguments resolved at runtime (such as ids returned by an
+     earlier call) are not known, so leave the list empty in that case.
    - `session_input.app_name`: the name of the agent folder (`agent_dir`). If it is
-     empty, infer it from `plan.md`; if that is not possible, ask the user.
+     empty, use the folder named under `### Agent package` in `plan.md`; if that is not possible, ask the user.
 5. Write `<eval_dir>/<feature-dir-name>.evalset.json`, using the feature directory name
    as `eval_set_id`. Create `eval_dir` if needed.
 6. Write `<eval_dir>/test_config.json` with the `criteria` from the configuration.
-   Include `tool_trajectory_avg_score` only if every case declares its expected tool
-   calls; otherwise omit it, because an empty trajectory would fail any case in which
-   the agent calls a tool.
+   If `check_tools` is `true`, add `"tool_trajectory_avg_score": {"threshold": 1.0,
+   "match_type": "IN_ORDER"}` to `criteria`; otherwise do not add it.
 7. Show a table with id, user story, scenario and expected tool calls. List any
    scenario you could not turn into a case and why. Suggest running
    `adk eval <agent_dir> <eval_dir>/<feature-dir-name>.evalset.json --config_file_path <eval_dir>/test_config.json --print_detailed_results`.

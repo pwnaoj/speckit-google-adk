@@ -6,6 +6,10 @@
 
 **Why**: [One or two sentences tied to the spec. Start from a single Agent and justify anything more.]
 
+### Agent package
+
+**Folder**: [snake_case_name]/ (contains `__init__.py`, `agent.py` and `root_agent`)
+
 ### Agents
 
 | Name | Role | Model | Tools | output_key |
@@ -14,9 +18,9 @@
 
 ### Tools
 
-| Name | Purpose | Inputs | Output | Spec ref |
-|------|---------|--------|--------|----------|
-| [tool_name] | [one line] | [typed parameters] | [return shape] | [FR-001] |
+| Name | Source | Purpose | Inputs | Output | Spec ref |
+|------|--------|---------|--------|--------|----------|
+| [tool_name] | [function / McpToolset / built-in] | [one line] | [typed parameters] | [return shape] | [FR-001] |
 
 ### State contract
 

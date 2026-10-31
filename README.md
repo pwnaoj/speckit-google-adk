@@ -16,6 +16,12 @@ Tested with Spec Kit 1.2.6.dev0, Google ADK 2.13.0 and Claude Code. Python only.
 
 Both are offered as optional hooks after `/speckit-plan` and `/speckit-tasks`.
 
+## Requirements
+
+- Spec Kit with the Claude Code integration.
+- `google-adk[eval]` 2.13.0 or later (`adk eval` needs the `eval` extra).
+- `GEMINI_API_KEY` in the environment or in the agent folder's `.env`.
+
 ## Install
 
 From a Spec Kit project initialised with Claude Code:
@@ -51,3 +57,12 @@ uv run pytest
 ## License
 
 MIT
+
+## Evaluation notes
+
+- The default criterion is `final_response_match_v2` (LLM judge). Do not use
+  `response_match_score` for free-text answers; it compares words and fails correct ones.
+- Tool-call checks are off by default (`check_tools: false`): ids resolved at runtime and
+  repeated calls make them fail without a real error.
+- With MCP toolsets, `adk eval` may log `Connection closed` while cases run in parallel.
+  ADK retries and the run completes; it is not an evaluation failure.
