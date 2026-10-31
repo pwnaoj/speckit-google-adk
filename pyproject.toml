@@ -1,0 +1,22 @@
+[project]
+name = "speckit-google-adk"
+version = "0.1.0"
+description = "Spec Kit extension for spec-driven development of Google ADK agents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Joan" }]
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "D"]
+ignore = ["D203", "D213"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
