@@ -60,3 +60,5 @@ Consider the user input before proceeding (if not empty).
   Missing tool names of an MCP server are not a requirement gap.
 - Every tool must trace to at least one functional requirement in the spec.
 - Keep the design as small as the spec allows.
+- Do not name evaluation criteria in the plan; `__SPECKIT_COMMAND_ADK_EVALSET__` chooses
+  them from the configuration.

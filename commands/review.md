@@ -30,7 +30,8 @@ Consider the user input before proceeding (if not empty).
    - every tool in the Tools table cites at least one `FR-xxx` that exists in the spec;
    - the chosen pattern is the simplest that the spec needs.
 6. Print a short report with three sections (Traceability, Evalset, Design) and a
-   final verdict: `OK` or the list of items to fix, each with the command that fixes it.
+   final verdict: `OK`, or the list of items to fix, each with the command that fixes it.
+   Report non-blocking observations as `Warnings`; they do not change the verdict.
 
 ## Rules
 
