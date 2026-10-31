@@ -9,6 +9,8 @@ An educational agent that answers questions about Colombia through the
 | Plan | `/speckit-plan` + `/speckit-adk-design` | `specs/001-colombia-guide/plan.md` (`## ADK Architecture`) |
 | Evaluation set | `/speckit-adk-evalset` | `tests/eval/` |
 | Implementation | hand-written | `colombia_guide/` |
+| Evaluation | `/speckit-adk-eval` | `specs/001-colombia-guide/eval-report.md` |
+| Review | `/speckit-adk-review` | traceability OK (chat report) |
 
 Run the evaluation from this folder (needs `google-adk[eval]` and `GEMINI_API_KEY`):
 

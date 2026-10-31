@@ -13,8 +13,14 @@ Tested with Spec Kit 1.2.6.dev0, Google ADK 2.13.0 and Claude Code. Python only.
 |---------|--------------|
 | `/speckit-adk-design` | Adds an `## ADK Architecture` section to `plan.md` (pattern, agents, tools, state, guardrails). |
 | `/speckit-adk-evalset` | Generates `*.evalset.json` and `test_config.json` from the scenarios in `spec.md`. |
+| `/speckit-adk-eval` | Runs `adk eval` and writes `eval-report.md` with results by user story. Calls the model. |
+| `/speckit-adk-review` | Read-only check of traceability between `spec.md`, `plan.md` and the evalset. |
 
-Both are offered as optional hooks after `/speckit-plan` and `/speckit-tasks`.
+`design`, `evalset` and `eval` are offered as optional hooks after `/speckit-plan`,
+`/speckit-tasks` and `/speckit-implement`. `review` is run by hand.
+
+Helper scripts (standard library only, installed in `.specify/extensions/adk/scripts/`):
+`validate_evalset.py`, `check_traceability.py` and `summarize_results.py`.
 
 ## Requirements
 
@@ -45,6 +51,11 @@ Edit `.specify/extensions/adk/adk-config.yml`:
 
 Eval ids follow `us<N>-sc<M>`: user story `N`, acceptance scenario `M`. Results of
 `adk eval` report the same ids.
+
+## Example
+
+[examples/colombia-guide](examples/colombia-guide) is a complete run: spec, plan with
+ADK architecture, evalset, agent and evaluation report.
 
 ## Development
 

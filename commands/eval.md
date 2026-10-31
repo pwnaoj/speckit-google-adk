@@ -28,13 +28,14 @@ Consider the user input before proceeding (if not empty).
    `<agent_dir>/.env`) without printing its value. If it is missing, stop and say so.
 6. Run, from the project root:
    `adk eval <agent_dir> <evalset> --config_file_path <eval_dir>/test_config.json`
-   Use `uv run adk ...` instead when the project is managed with uv. If the command
-   fails with `Eval module is not installed`, tell the user to install
-   `google-adk[eval]`.
+   Use `uv run adk ...` when the project root has a `uv.lock`. If `adk` is not found,
+   stop and tell the user to install `google-adk[eval]` or activate its environment.
+   If the command fails with `Eval module is not installed`, say the same.
 7. Summarize the newest result:
    `python3 .specify/extensions/adk/scripts/summarize_results.py <agent_dir>/.adk/eval_history`
 8. Write `FEATURE_DIR/eval-report.md` with a table (eval id, user story, scenario,
-   status, score/threshold). For every failed case, quote the scenario's *Then* from
+   status, score/threshold). The eval id `us<N>-sc<M>` gives the user story `N` and the
+   scenario number `M` in `FEATURE_DIR/spec.md`. For every failed case, quote the scenario's *Then* from
    `spec.md`, say what the agent answered (from the run output) and suggest a fix.
 
 ## Rules
