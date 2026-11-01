@@ -74,3 +74,9 @@ def test_plan_section_template_asks_for_project_specific_evaluation():
     text = (ROOT / "templates" / "adk-plan-section.md").read_text(encoding="utf-8")
     assert "Needs a simulated service" in text
     assert "__SPECKIT_COMMAND" not in text
+
+
+def test_design_reads_the_planning_artifacts():
+    text = (ROOT / "commands" / "design.md").read_text(encoding="utf-8")
+    assert "research.md" in text
+    assert "contracts/" in text

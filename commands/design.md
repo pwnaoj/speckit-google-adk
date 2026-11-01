@@ -22,7 +22,9 @@ Consider the user input before proceeding (if not empty).
    running the core plan command first.
 2. Read `FEATURE_DIR/spec.md`, `FEATURE_DIR/plan.md` and, if present,
    `.specify/memory/constitution.md`. Ignore the constitution if it is still the
-   unfilled template (placeholders such as `[PROJECT_NAME]`).
+   unfilled template (placeholders such as `[PROJECT_NAME]`). Also read the other
+   planning artifacts in `FEATURE_DIR` when they exist (`research.md`, `data-model.md` and
+   the files in `contracts/`): they hold decisions such as tool names and service URLs.
 3. Read `.specify/extensions/adk/adk-config.yml` for `model` and `agent_dir`. If
    `agent_dir` is empty, propose a snake_case folder name for the agent package from the
    feature name and record it in the plan; do not treat the empty value as a gap.
@@ -41,8 +43,10 @@ Consider the user input before proceeding (if not empty).
    - Agents: name, role, model, tools and `output_key` of each agent.
    - Tools: one row per function tool, with typed parameters and the `FR-xxx` it
      serves. For an MCP server add a single row for its toolset (`McpToolset`) with the
-     server URL; list individual tool names only if they are already known, otherwise
-     write `all tools of the server` and do not mark it `[NEEDS CLARIFICATION]`.
+     server URL. Take the tool names and the URL from the planning artifacts. Only if no
+     artifact lists the tools, write `all tools of the server` there; never copy that
+     phrase next to a list of names, and do not mark missing tool names
+     `[NEEDS CLARIFICATION]`.
    - State contract: every session state key, who writes it and who reads it.
    - Guardrails: what the agent must not do, taken from the spec and the constitution.
    - Evaluation: fill every field from real data. The evalset path uses `eval_dir` from
