@@ -68,3 +68,9 @@ def test_commands_support_both_prerequisite_script_flavors():
         text = (ROOT / command["file"]).read_text(encoding="utf-8")
         if "check-prerequisites.sh" in text:
             assert "check_prerequisites.py" in text, command["file"]
+
+
+def test_plan_section_template_asks_for_project_specific_evaluation():
+    text = (ROOT / "templates" / "adk-plan-section.md").read_text(encoding="utf-8")
+    assert "Needs a simulated service" in text
+    assert "__SPECKIT_COMMAND" not in text

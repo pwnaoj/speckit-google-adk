@@ -8,7 +8,7 @@
 
 ### Agent package
 
-**Folder**: [snake_case_name]/ (contains `__init__.py`, `agent.py` and `root_agent`)
+**Folder**: [snake_case_name]/
 
 ### Agents
 
@@ -34,8 +34,15 @@
 
 ### Evaluation
 
-Every acceptance scenario in `spec.md` becomes one eval case with id `us<N>-sc<M>`.
-Generate them with the ADK evalset command (`speckit.adk.evalset`).
+**Evalset**: [<eval_dir>/<feature-dir-name>.evalset.json]
+
+**Cases**: [number of acceptance scenarios; one case each]
+
+**Criteria**: [criteria and thresholds from the configuration; tool-call checks on or off]
+
+**Needs a simulated service**: [ids of the scenarios whose Given changes what the data
+service returns (error, empty or hostile content) and how they are simulated; "none" if no
+scenario needs it]
 
 ### Risks
 

@@ -45,7 +45,13 @@ Consider the user input before proceeding (if not empty).
      write `all tools of the server` and do not mark it `[NEEDS CLARIFICATION]`.
    - State contract: every session state key, who writes it and who reads it.
    - Guardrails: what the agent must not do, taken from the spec and the constitution.
-   - Evaluation: keep the text of the template.
+   - Evaluation: fill every field from real data. The evalset path uses `eval_dir` from
+     the configuration and the feature directory name. Count the acceptance scenarios of
+     `spec.md`. Take the criteria and thresholds from `criteria` and `check_tools` in the
+     configuration. List the scenarios whose Given changes what a tool returns (service
+     error, empty or hostile content): they cannot run against the live service. Name how
+     they are simulated only if the plan already says so; otherwise write
+     `[NEEDS CLARIFICATION: how these scenarios are simulated]`.
    - Risks: loops, tool misuse, cost, missing credentials.
 6. Write the result into `FEATURE_DIR/plan.md` under the heading `## ADK Architecture`.
    If that section already exists, replace only that section; otherwise append it at the
