@@ -46,6 +46,9 @@ Consider the user input before proceeding (if not empty).
 - Never edit the evalset, the criteria or their thresholds to make a case pass.
 - Do not change the agent code in this command; propose changes in the report.
 - Fixes belong in the agent instructions, the tool descriptions or the spec.
-- `Connection closed` log lines from MCP servers are retried by ADK; they are not
-  failures.
+- With MCP toolsets, many cases running in parallel can make the server close
+  connections (`Connection closed`). ADK usually retries, but sometimes the agent runs
+  without its tools (log line `will run without the tools from toolset`) and a case fails
+  for that reason alone. Before proposing a fix for a failed case, rerun it alone with the
+  `:ids` suffix; if it passes, report it as an infrastructure failure, not an agent defect.
 - Report the numbers as they are; do not round failures up.

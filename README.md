@@ -76,4 +76,7 @@ MIT
 - Tool-call checks are off by default (`check_tools: false`): ids resolved at runtime and
   repeated calls make them fail without a real error.
 - With MCP toolsets, `adk eval` may log `Connection closed` while cases run in parallel.
-  ADK retries and the run completes; it is not an evaluation failure.
+  Usually ADK retries and the run completes, but with many cases at once the agent can run
+  without its tools (log line `will run without the tools from toolset`) and cases fail
+  for that reason alone. Rerun failed cases individually with the `:ids` suffix
+  (`file.evalset.json:us1-sc1,us1-sc2`) and run large evalsets in groups.
