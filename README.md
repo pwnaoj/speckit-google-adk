@@ -30,7 +30,16 @@ Helper scripts (standard library only, installed in `.specify/extensions/adk/scr
 
 ## Install
 
-From a Spec Kit project initialised with Claude Code:
+From a Spec Kit project initialised with Claude Code, install a release:
+
+```bash
+specify extension add adk --from https://github.com/pwnaoj/speckit-google-adk/archive/refs/tags/v0.1.0.zip
+```
+
+Spec Kit warns that the source is an external URL and asks you to confirm. Use the tag of the
+version you want; `main` changes with every commit.
+
+To work on the extension itself, install it from a local folder:
 
 ```bash
 specify extension add --dev /path/to/speckit-google-adk

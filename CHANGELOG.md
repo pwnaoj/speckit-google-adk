@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-11-02)
 
 - Add `speckit.adk.design` and `speckit.adk.evalset`.
 - Add `speckit.adk.eval` and `speckit.adk.review`, and the `after_implement` hook.
