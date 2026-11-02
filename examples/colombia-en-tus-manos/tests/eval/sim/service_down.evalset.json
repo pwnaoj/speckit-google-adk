@@ -1,0 +1,40 @@
+{
+  "eval_set_id": "service_down",
+  "name": "Colombia en tus manos — variante service_down",
+  "description": "Generated from spec.md acceptance scenarios; runs against a simulated data service.",
+  "eval_cases": [
+    {
+      "eval_id": "us4-sc4",
+      "conversation": [
+        {
+          "invocation_id": "us4-sc4-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué ciudades tiene Boyacá?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Dice con claridad que en este momento no puede consultar los datos y sugiere intentarlo más tarde. No menciona errores, códigos ni conexiones, y no responde con datos propios."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "service_down",
+        "user_id": "test_user",
+        "state": {}
+      }
+    }
+  ]
+}

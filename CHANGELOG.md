@@ -7,7 +7,7 @@
 - Add scripts to validate evalsets, check traceability and summarize results.
 - Add plan section, evalset and configuration templates.
 - Default criterion is `final_response_match_v2`; tool-call checks are opt-in.
-- Add the Colombia guide example and pytest/ruff checks.
+- Add an example (a snapshot of a real project) and pytest/ruff checks.
 - `design`: alternatives considered, guardrails table with mechanism and the scenario that
   verifies each one, a coverage check, a coordinator pattern and a note on ADK Skills
   (experimental). The column is named *Exercised by*: it records which scenario exercises a

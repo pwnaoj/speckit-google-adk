@@ -125,8 +125,10 @@ hand. Until then `review` reports them as `MISSING`, which is expected.
 
 ## Example
 
-[examples/colombia-guide](examples/colombia-guide) is a small complete run: spec, plan with
-ADK architecture, evalset, agent and evaluation report.
+[examples/colombia-en-tus-manos](examples/colombia-en-tus-manos) is a snapshot of a real
+project built with the extension: constitution, spec, plan with ADK architecture, tasks,
+evalsets, simulated-service variants, agent and evaluation report. See
+[examples/README.md](examples/README.md) for what each step produced.
 
 ## Development
 

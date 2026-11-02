@@ -1,0 +1,27 @@
+[project]
+name = "colombia-en-tus-manos"
+version = "0.1.0"
+description = "Agente conversacional educativo sobre Colombia con datos del servidor MCP de API-Colombia"
+requires-python = ">=3.13"
+dependencies = [
+    "google-adk[eval,mcp]>=2.13",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+# PEP 8 sugiere 79 columnas; el proyecto usa 100, que es el ancho con el que ya está escrito.
+line-length = 100
+# Spec Kit y sus extensiones traen sus propios scripts; no se lintean aquí.
+extend-exclude = [".specify", ".claude"]
+
+[tool.ruff.lint]
+# E/W: pycodestyle (PEP 8), F: pyflakes, I: orden de imports, N: nombres (PEP 8).
+select = ["E", "W", "F", "I", "N"]
+
+[tool.ruff.lint.per-file-ignores]
+# ADK carga el módulo `agent` al importar el paquete; el import es una reexportación intencionada.
+"__init__.py" = ["F401"]

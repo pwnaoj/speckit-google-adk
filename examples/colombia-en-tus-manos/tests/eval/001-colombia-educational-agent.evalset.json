@@ -1,0 +1,375 @@
+{
+  "eval_set_id": "001-colombia-educational-agent",
+  "name": "Colombia en tus manos — agente educativo",
+  "description": "Generated from spec.md acceptance scenarios.",
+  "eval_cases": [
+    {
+      "eval_id": "us1-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us1-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué ciudades tiene Boyacá?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Lista ciudades de Boyacá obtenidas de la API, entre ellas Tunja como capital del departamento, con una explicación didáctica."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us1-sc2",
+      "conversation": [
+        {
+          "invocation_id": "us1-sc2-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué atractivos turísticos tiene Santander?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Presenta atractivos del departamento de Santander (no de Norte de Santander) e indica a cuál departamento se refiere."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us1-sc3",
+      "conversation": [
+        {
+          "invocation_id": "us1-sc3-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué ciudades hay en Boyaca?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Reconoce el departamento de Boyacá aunque esté escrito sin tilde y lista sus ciudades, entre ellas Tunja como capital, como si estuviera bien escrito."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us2-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us2-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué moneda, idiomas y zona horaria tiene Colombia?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Responde con la moneda, los idiomas y la zona horaria de Colombia obtenidos de la API, e indica que la moneda es el peso colombiano (COP)."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_country_info",
+                "args": {}
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us3-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us3-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Cuéntame sobre el ajiaco"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Presenta el Ajiaco Santafereño, una sopa tradicional de Bogotá y el altiplano cundiboyacense, con guasca entre sus ingredientes, y lo contextualiza."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us3-sc2",
+      "conversation": [
+        {
+          "invocation_id": "us3-sc2-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué es el Nevado del Ruiz?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Presenta el volcán Nevado del Ruiz con 5321 m de altura, de tipo estratovolcán y ubicado en el Tolima, y explica qué significan esos datos."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us3-sc3",
+      "conversation": [
+        {
+          "invocation_id": "us3-sc3-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Háblame del ajiaco y dime qué atractivos turísticos tiene Boyacá."
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Responde ambas partes con datos de la API: el Ajiaco Santafereño con guasca y atractivos turísticos de Boyacá; o aclara con cuál de las dos puede continuar."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us4-sc1",
+      "conversation": [
+        {
+          "invocation_id": "us4-sc1-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué clima hará mañana en Bogotá?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Explica que no dispone de ese dato, no lo inventa ni da un pronóstico, y sugiere temas que sí puede tratar."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us4-sc2",
+      "conversation": [
+        {
+          "invocation_id": "us4-sc2-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "¿Qué universidades hay en Colombia?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Explica que no tiene información sobre universidades (ni sobre canales de televisión), no inventa una lista y sugiere temas disponibles."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us4-sc3",
+      "conversation": [
+        {
+          "invocation_id": "us4-sc3-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Cuéntame de la pizza hawaiana como plato típico colombiano."
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Indica que no encontró ese plato típico, no inventa información sobre él y sugiere platos o temas que sí puede tratar."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "us4-sc6",
+      "conversation": [
+        {
+          "invocation_id": "us4-sc6-inv1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Recomiéndame qué visitar en Boyacá."
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Responde con atractivos o lugares de Boyacá obtenidos de la API, sin pedir nombre, correo, ubicación ni otros datos personales al usuario."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "colombia_en_tus_manos",
+        "user_id": "test_user",
+        "state": {}
+      }
+    }
+  ]
+}
