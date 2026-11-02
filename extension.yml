@@ -6,6 +6,7 @@ extension:
   version: "0.1.0"
   description: "Spec-driven development of Google ADK agents: architecture planning and traceable evaluation sets."
   author: "Joan"
+  repository: "https://github.com/pwnaoj/speckit-google-adk"
   license: "MIT"
 
 requires:
