@@ -85,7 +85,8 @@ def test_design_reads_the_planning_artifacts():
 def test_design_template_traces_guardrails_and_alternatives():
     text = (ROOT / "templates" / "adk-plan-section.md").read_text(encoding="utf-8")
     assert "Alternatives considered" in text
-    assert "Verified by" in text and "Mechanism" in text
+    assert "Exercised by" in text and "Mechanism" in text
+    assert "Verified by" not in text
 
 
 def test_design_command_mentions_new_options_and_coverage_check():

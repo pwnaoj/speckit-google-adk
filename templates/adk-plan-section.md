@@ -32,9 +32,12 @@
 
 ### Guardrails
 
-| Guardrail | Requirement | Mechanism | Verified by |
+| Guardrail | Requirement | Mechanism | Exercised by |
 |-----------|-------------|-----------|-------------|
 | [What the agent must not do] | [FR-001 or a constitution principle] | [prompt / callback / plugin / tool_filter] | [us1-sc1, or none] |
+
+*Exercised by* names the scenario that exercises the limit. It does not mean the evaluation
+would fail if the limit were broken.
 
 ### Evaluation
 

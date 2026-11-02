@@ -10,4 +10,5 @@
 - Add the Colombia guide example and pytest/ruff checks.
 - `design`: alternatives considered, guardrails table with mechanism and the scenario that
   verifies each one, a coverage check, a coordinator pattern and a note on ADK Skills
-  (experimental).
+  (experimental). The column is named *Exercised by*: it records which scenario exercises a
+  limit, not that the evaluation would detect its violation.

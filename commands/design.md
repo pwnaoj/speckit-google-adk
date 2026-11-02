@@ -59,9 +59,10 @@ Consider the user input before proceeding (if not empty).
    - State contract: every session state key, who writes it and who reads it.
    - Guardrails: one row per limit the agent must respect, taken from the spec and the
      constitution, with the requirement it serves, the mechanism that enforces it
-     (`prompt`, `callback`, `plugin` or `tool_filter`) and *Verified by*: the id(s)
+     (`prompt`, `callback`, `plugin` or `tool_filter`) and *Exercised by*: the id(s)
      `us<N>-sc<M>` of the acceptance scenario(s) that exercise it (user story `N`, scenario
-     `M` as numbered in `spec.md`), or `none`.
+     `M` as numbered in `spec.md`), or `none`. This records which scenario exercises the
+     limit, not that the evaluation would fail if the limit were broken; do not claim more.
    - Evaluation: fill every field from real data. The evalset path uses `eval_dir` from
      the configuration and the feature directory name. Count the acceptance scenarios of
      `spec.md`. Take the criteria and thresholds from `criteria` and `check_tools` in the
@@ -73,13 +74,13 @@ Consider the user input before proceeding (if not empty).
    - Risks: loops, tool misuse, cost, missing credentials.
 6. Check coverage before writing: every `FR-xxx` of the spec must appear in the Tools or
    Guardrails tables (add a row for any that does not), and every tool must cite a
-   requirement. List each guardrail whose *Verified by* is `none` under Risks as an
-   unverified requirement.
+   requirement. List each guardrail whose *Exercised by* is `none` under Risks as a
+   requirement with no scenario.
 7. Write the result into `FEATURE_DIR/plan.md` under the heading `## ADK Architecture`.
    If that section already exists, replace only that section; otherwise append it at the
    end of the file. Do not change any other part of `plan.md`.
 8. Report the chosen pattern, the agents and tools, and any item marked
-   `[NEEDS CLARIFICATION]` and any unverified requirement. Suggest the next step: `__SPECKIT_COMMAND_TASKS__`, then
+   `[NEEDS CLARIFICATION]` and any requirement with no scenario. Suggest the next step: `__SPECKIT_COMMAND_TASKS__`, then
    `__SPECKIT_COMMAND_ADK_EVALSET__`.
 
 ## Rules
