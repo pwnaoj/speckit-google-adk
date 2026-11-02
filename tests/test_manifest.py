@@ -80,3 +80,16 @@ def test_design_reads_the_planning_artifacts():
     text = (ROOT / "commands" / "design.md").read_text(encoding="utf-8")
     assert "research.md" in text
     assert "contracts/" in text
+
+
+def test_design_template_traces_guardrails_and_alternatives():
+    text = (ROOT / "templates" / "adk-plan-section.md").read_text(encoding="utf-8")
+    assert "Alternatives considered" in text
+    assert "Verified by" in text and "Mechanism" in text
+
+
+def test_design_command_mentions_new_options_and_coverage_check():
+    text = (ROOT / "commands" / "design.md").read_text(encoding="utf-8")
+    assert "sub_agents" in text
+    assert "SkillToolset" in text and "experimental" in text
+    assert "Check coverage" in text

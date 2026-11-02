@@ -6,6 +6,8 @@
 
 **Why**: [One or two sentences tied to the spec. Start from a single Agent and justify anything more.]
 
+**Alternatives considered**: [The next simpler and the next more complex pattern, and why each was rejected.]
+
 ### Agent package
 
 **Folder**: [snake_case_name]/
@@ -30,7 +32,9 @@
 
 ### Guardrails
 
-- [What the agent must not do, from the spec and the constitution]
+| Guardrail | Requirement | Mechanism | Verified by |
+|-----------|-------------|-----------|-------------|
+| [What the agent must not do] | [FR-001 or a constitution principle] | [prompt / callback / plugin / tool_filter] | [us1-sc1, or none] |
 
 ### Evaluation
 
@@ -41,7 +45,7 @@
 **Criteria**: [criteria and thresholds from the configuration; tool-call checks on or off]
 
 **Needs a simulated service**: [ids of the scenarios whose Given changes what the data
-service returns (error, empty or hostile content) and how they are simulated; "none" if no
+service returns (error or hostile content) and how they are simulated; "none" if no
 scenario needs it]
 
 ### Risks
