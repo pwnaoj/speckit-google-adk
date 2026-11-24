@@ -48,6 +48,10 @@ provides:
       file: "scripts/check_traceability.py"
       description: "Compare spec scenarios with eval cases"
       runtimes: ["python"]
+    - name: "eval-provenance"
+      file: "scripts/eval_provenance.py"
+      description: "Print the provenance of an evaluation run (commit, hashes, models)"
+      runtimes: ["python"]
     - name: "summarize-results"
       file: "scripts/summarize_results.py"
       description: "Summarize adk eval results by eval id"

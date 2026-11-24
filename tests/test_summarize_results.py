@@ -96,3 +96,23 @@ def test_status_name_knows_informational():
     assert module.status_name(1) == "PASSED"
     assert module.status_name(4) == "INFORMATIONAL"
     assert module.status_name("FAILED") == "FAILED"
+
+
+def test_cost_line_adds_up_every_invocation_of_every_run(capsys):
+    cost = module.cost_totals(load(MULTIRUN))
+    assert cost["tool_calls"] == 9 and cost["tokens"] == 9000
+    assert cost["invocations"] == 9 and "seconds" not in cost
+    assert module.main(["x", str(MULTIRUN)]) == 1
+    out = capsys.readouterr().out
+    assert "tool_calls=9 tokens=9000" in out
+
+
+def test_fixture_with_all_cost_metrics_and_duration():
+    cost = module.cost_totals(load(FIXTURE))
+    assert cost["seconds"] > 0 and cost["max_seconds"] <= cost["seconds"]
+    line = module.cost_line(module.merge_costs([cost, cost]))
+    assert line.startswith("Cost (agent only") and "seconds_max=" in line
+
+
+def test_no_cost_metrics_prints_no_cost_line():
+    assert module.cost_line(module.cost_totals({"eval_case_results": []})) == ""

@@ -111,3 +111,9 @@ def test_config_template_declares_new_keys_and_min_adk_version():
     assert config["preflight_command"] == "" and config["repeats"] == 1
     tool = MANIFEST["requires"]["tools"][0]
     assert tool["version"] == ">=2.15.0"
+
+
+def test_eval_command_reports_provenance_cost_and_history():
+    text = (ROOT / "commands" / "eval.md").read_text(encoding="utf-8")
+    assert "eval_provenance.py" in text and "eval-history.md" in text
+    assert "Cost" in text and "judge calls are not counted" in text

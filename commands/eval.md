@@ -62,13 +62,24 @@ Consider the user input before proceeding (if not empty).
    `python3 .specify/extensions/adk/scripts/summarize_results.py <agent_dir>/.adk/eval_history --since <start time>`
    Its exit code is 1 when any case did not pass, which is a result, and 2 when it found
    no results.
-9. Write `FEATURE_DIR/eval-report.md` with a table (eval id, user story, scenario,
-   status, score/threshold, and `k/N` runs when `repeats` is greater than 1). Mark the
-   cases the summary flags `UNSTABLE`: they passed in some runs and failed in others.
-   The eval id `us<N>-sc<M>` gives the user story `N` and the
-   scenario number `M` in `FEATURE_DIR/spec.md`. For every failed case, quote the scenario's *Then* from
-   `spec.md`, say what the agent answered (the `answer:` line printed for each failed case in
-   step 8) and suggest a fix.
+9. Get the provenance of the run:
+   `python3 .specify/extensions/adk/scripts/eval_provenance.py --agent-dir <agent_dir> --evalset <evalset> --config <eval_dir>/test_config.json --repeats <repeats> --adk-version <version>`
+   where `<version>` is the version printed by `adk --version` (with the same prefix as
+   step 7).
+10. Write `FEATURE_DIR/eval-report.md`, replacing the previous one, with:
+   - a table (eval id, user story, scenario, status, score/threshold, and `k/N` runs
+     when `repeats` is greater than 1). Mark the cases the summary flags `UNSTABLE`: they
+     passed in some runs and failed in others;
+   - the `Cost` line of step 8 as it is (agent only: judge calls are not counted);
+   - a *Provenance* section with the lines printed in step 9, unchanged;
+   - for every failed case, the scenario's *Then* quoted from `spec.md`, what the agent
+     answered (the `answer:` line of step 8) and a suggested fix. The eval id
+     `us<N>-sc<M>` gives the user story `N` and the scenario `M` in
+     `FEATURE_DIR/spec.md`.
+11. Append one row to `FEATURE_DIR/eval-history.md` (create it with this header if it does
+   not exist: `| Date | Commit | Passed | Failed | Unstable | Repeats | Tokens |` and its
+   separator line). Take every value from the summary and the provenance; never edit or
+   delete earlier rows. Use `-` for a value that was not printed.
 
 ## Rules
 

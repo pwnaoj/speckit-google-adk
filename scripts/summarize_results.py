@@ -11,7 +11,8 @@ evalsets is summarized as a whole.
 
 With several runs per case (`adk eval --num_runs N`) each case shows `k/N` passed runs
 and is marked UNSTABLE when some runs passed and some did not. The case status is
-ADK's verdict over all its runs.
+ADK's verdict over all its runs. A final `Cost` line adds up the agent's model calls,
+tool calls, tokens and duration over all invocations of all runs.
 
 Exit code: 0 every case passed, 1 any case did not pass, 2 bad usage or no results.
 """
@@ -23,6 +24,12 @@ from pathlib import Path
 
 STATUS = {1: "PASSED", 2: "FAILED", 3: "NOT_EVALUATED", 4: "INFORMATIONAL"}
 ANSWER_LIMIT = 300
+COST_METRICS = {
+    "inference_call_count_v1": "model_calls",
+    "tool_call_count_v1": "tool_calls",
+    "token_usage_v1": "tokens",
+}
+DURATION_METRIC = "invocation_duration_v1"
 SINCE_TOLERANCE = 1.0  # seconds; file times can be slightly earlier than `date +%s`
 
 
@@ -130,6 +137,59 @@ def summarize(result: dict) -> list[Row]:
     return sorted(rows, key=lambda row: row.eval_id)
 
 
+def cost_totals(result: dict) -> dict[str, float]:
+    """Add up the cost metrics ADK records for every invocation of every run.
+
+    They describe the agent only: judge model calls are not included. Returns an empty
+    dict when the result has no cost metrics.
+    """
+    totals: dict[str, float] = {}
+    for case in result.get("eval_case_results", []):
+        for invocation in case.get("eval_metric_result_per_invocation", []):
+            counted = False
+            for metric in invocation.get("eval_metric_results", []):
+                name, score = metric.get("metric_name"), metric.get("score")
+                known = name in COST_METRICS or name == DURATION_METRIC
+                if score is None or not known:
+                    continue
+                if not counted:
+                    totals["invocations"] = totals.get("invocations", 0) + 1
+                    counted = True
+                if name in COST_METRICS:
+                    key = COST_METRICS[name]
+                    totals[key] = totals.get(key, 0) + score
+                elif name == DURATION_METRIC:
+                    totals["seconds"] = totals.get("seconds", 0) + score
+                    totals["max_seconds"] = max(totals.get("max_seconds", 0), score)
+    return totals
+
+
+def merge_costs(costs: list[dict[str, float]]) -> dict[str, float]:
+    """Combine the cost totals of several result files."""
+    merged: dict[str, float] = {}
+    for cost in costs:
+        for key, value in cost.items():
+            if key == "max_seconds":
+                merged[key] = max(merged.get(key, 0), value)
+            else:
+                merged[key] = merged.get(key, 0) + value
+    return merged
+
+
+def cost_line(cost: dict[str, float]) -> str:
+    """Describe the cost totals in one line, or return an empty string."""
+    if not cost:
+        return ""
+    parts = [f"invocations={cost.get('invocations', 0):.0f}"]
+    for key in ("model_calls", "tool_calls", "tokens"):
+        if key in cost:
+            parts.append(f"{key}={cost[key]:.0f}")
+    if "seconds" in cost:
+        parts.append(f"seconds_total={cost['seconds']:.1f}")
+        parts.append(f"seconds_max={cost['max_seconds']:.1f}")
+    return "Cost (agent only, judge not included): " + " ".join(parts)
+
+
 def _parse_args(argv: list[str]) -> tuple[list[Path], float | None] | None:
     """Return (paths, since), or None when the arguments are not valid."""
     paths, since, args = [], None, iter(argv[1:])
@@ -156,9 +216,12 @@ def main(argv: list[str]) -> int:
         print(f"ERROR: no *.evalset_result.json found in {' '.join(map(str, paths))}")
         return 2
     total = passed = unstable = 0
+    costs = []
     for file in files:
         try:
-            rows = summarize(json.loads(file.read_text(encoding="utf-8")))
+            result = json.loads(file.read_text(encoding="utf-8"))
+            rows = summarize(result)
+            costs.append(cost_totals(result))
         except (OSError, ValueError, KeyError) as error:
             print(f"ERROR: cannot read {file}: {error}")
             return 2
@@ -174,6 +237,8 @@ def main(argv: list[str]) -> int:
         unstable += sum(row.unstable for row in rows)
     line = f"Passed: {passed}  Failed: {total - passed}"
     print(line + (f"  Unstable: {unstable}" if unstable else ""))
+    if cost := cost_line(merge_costs(costs)):
+        print(cost)
     return 1 if passed < total else 0
 
 

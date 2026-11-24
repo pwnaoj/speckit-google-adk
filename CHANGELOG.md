@@ -14,6 +14,12 @@
   one invocation are summarized; groups repeated runs by case, uses ADK's
   `multi_run_case_summaries`, knows status 4 (INFORMATIONAL); exits 2 when it finds no
   results.
+- `summarize_results.py`: adds a `Cost` line (agent model calls, tool calls, tokens and
+  time over all invocations of all runs; the judge is not included).
+- Add `eval_provenance.py`: commit, hashes of evalset, test config and agent package,
+  judge and agent models, repeats and date.
+- `eval` writes the provenance and cost in `eval-report.md` and appends a row to
+  `eval-history.md`.
 
 ## 0.1.0 (2026-11-02)
 

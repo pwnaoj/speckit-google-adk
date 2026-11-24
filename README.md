@@ -16,11 +16,12 @@ Python only. See [Known limitations](#known-limitations).
 |---------|--------------|
 | `/speckit-adk-design` | Adds an `## ADK Architecture` section to `plan.md`: pattern and alternatives, agents, tools, state, guardrails (with the scenario that verifies each one) and evaluation plan. |
 | `/speckit-adk-evalset` | Generates `*.evalset.json` and `test_config.json` from the scenarios in `spec.md`. |
-| `/speckit-adk-eval` | Runs `adk eval` and writes `eval-report.md` with results by user story. Calls the model. |
+| `/speckit-adk-eval` | Runs `adk eval` and writes `eval-report.md` (results by user story, agent cost, provenance) and appends a row to `eval-history.md`. Calls the model. |
 | `/speckit-adk-review` | Read-only check of traceability between `spec.md`, `plan.md` and the evalset. |
 
 Helper scripts (standard library only, installed in `.specify/extensions/adk/scripts/`):
-`validate_evalset.py`, `check_traceability.py` and `summarize_results.py`.
+`validate_evalset.py`, `check_traceability.py`, `summarize_results.py` and
+`eval_provenance.py`.
 
 ## Requirements
 
@@ -121,6 +122,14 @@ Notes:
   score against the threshold). A case can pass and still be flagged `UNSTABLE`. For other
   rules (for example "at least 4 of 5 runs") add `multi_run_config` with `cross_run_criteria`
   to `test_config.json`.
+- `eval-report.md` is the current report and is replaced on every run. `eval-history.md`
+  keeps one row per run (date, commit, passed, failed, unstable, repeats, tokens). The
+  report ends with the provenance of the run: commit (and whether the tree had
+  uncommitted changes), ADK version, hashes of the evalset, the test configuration and the
+  agent package, judge model, agent model found in the code (a text search: it can miss
+  one), repeats and date.
+- The cost line adds up the model calls, tool calls, tokens and time ADK records for the
+  agent over all invocations of all runs. It does not include the judge's calls.
 - The summary reads every result written by the invocation (`--since`), so several
   evalsets, including simulated-service variants, appear in one report.
 
