@@ -43,7 +43,7 @@ Helper scripts (standard library only, installed in `.specify/extensions/adk/scr
 From a Spec Kit project initialised with Claude Code, install a release:
 
 ```bash
-specify extension add adk --from https://github.com/pwnaoj/speckit-google-adk/archive/refs/tags/v0.1.0.zip
+specify extension add adk --from https://github.com/pwnaoj/speckit-google-adk/archive/refs/tags/v0.2.0.zip
 ```
 
 Spec Kit warns that the source is an external URL and asks you to confirm. Use the tag of the
