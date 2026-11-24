@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## 0.2.0 (2026-11-24)
 
 - Requires `google-adk[eval]` 2.15.0 or later.
 - `eval`: checks authentication for any provider (API key, Vertex AI / Enterprise, other)
