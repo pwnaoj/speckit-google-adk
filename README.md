@@ -5,7 +5,13 @@ Spec-driven development of [Google ADK](https://adk.dev) agents with
 becomes a traceable evaluation case, and the agent architecture is decided in `plan.md`
 before any code is written.
 
-Tested with Spec Kit 1.2.6.dev0, Google ADK 2.13.0 and Claude Code, on one real project.
+Requires Google ADK 2.15.0 or later. Version 0.2.0 was run end to end (installed in a Spec
+Kit 1.2.6.dev0 project, `/speckit-adk-eval` run by Claude Code) on one real project with
+Google ADK 2.15.0 and an API key: the normal path, a failing preflight, missing credentials,
+failing cases, unstable cases with `repeats: 4` and a simulated-service variant. Not tested:
+Vertex AI / Enterprise credentials, a `.env`-based key, the Python prerequisites script, the
+full 11-case evalset in one run and the `after_implement` hook. The original example was
+built with ADK 2.13.0 and Spec Kit 1.2.6.dev0.
 Python only. See [Known limitations](#known-limitations).
 
 ## Commands
@@ -14,19 +20,23 @@ Python only. See [Known limitations](#known-limitations).
 |---------|--------------|
 | `/speckit-adk-design` | Adds an `## ADK Architecture` section to `plan.md`: pattern and alternatives, agents, tools, state, guardrails (with the scenario that verifies each one) and evaluation plan. |
 | `/speckit-adk-evalset` | Generates `*.evalset.json` and `test_config.json` from the scenarios in `spec.md`. |
-| `/speckit-adk-eval` | Runs `adk eval` and writes `eval-report.md` with results by user story. Calls the model. |
+| `/speckit-adk-eval` | Runs `adk eval` and writes `eval-report.md` (results by user story, agent cost, provenance) and appends a row to `eval-history.md`. Calls the model. |
 | `/speckit-adk-review` | Read-only check of traceability between `spec.md`, `plan.md` and the evalset. |
 
 Helper scripts (standard library only, installed in `.specify/extensions/adk/scripts/`):
-`validate_evalset.py`, `check_traceability.py` and `summarize_results.py`.
+`validate_evalset.py`, `check_traceability.py`, `summarize_results.py` and
+`eval_provenance.py`.
 
 ## Requirements
 
 - Spec Kit with the Claude Code integration (scripts in bash or Python are both supported).
-- `google-adk[eval]` 2.13.0 or later: `adk eval` needs the `eval` extra. If the agent uses
+- `google-adk[eval]` 2.15.0 or later: `adk eval` needs the `eval` extra. If the agent uses
   an MCP server, also the `mcp` extra (`google-adk[eval,mcp]`); `eval` does not include it.
-- `GEMINI_API_KEY` in the environment or in a `.env` the agent can find (ADK looks for it
-  from the agent folder up to the project root). Do not commit it.
+- A way to authenticate the model of the agent and of the judge (they share the process
+  environment): an API key (`GEMINI_API_KEY` or `GOOGLE_API_KEY`) or Vertex AI / Enterprise
+  (`GOOGLE_GENAI_USE_ENTERPRISE=true`, `GOOGLE_CLOUD_PROJECT`, a location and application
+  default credentials). `GOOGLE_GENAI_USE_VERTEXAI` still works but is deprecated. ADK loads
+  the first `.env` it finds from the agent folder up to the project root. Do not commit it.
 
 ## Install
 
@@ -71,7 +81,9 @@ Edit `.specify/extensions/adk/adk-config.yml`:
 | `agent_dir` | Folder of the agent package. If empty, the folder proposed in the plan is used. |
 | `model` | Model for newly designed agents. |
 | `eval_dir` | Where evalsets are written (default `tests/eval`). |
-| `criteria` | Criteria for `test_config.json`. The default is `final_response_match_v2` (LLM judge, needs only `GEMINI_API_KEY`). Do not use `response_match_score` for free-text answers: it compares words and fails correct ones. |
+| `criteria` | Criteria for `test_config.json`. The default is `final_response_match_v2` (LLM judge, same authentication as the agent). Do not use `response_match_score` for free-text answers: it compares words and fails correct ones. |
+| `preflight_command` | Optional command that must exit 0 before the evaluation starts (data loaded, API reachable...). Empty by default. |
+| `repeats` | Times each case runs (`adk eval --num_runs`). Default 1. With more, the report shows `k/N` passed runs and marks unstable cases. |
 | `check_tools` | Also check tool calls (off by default: ids resolved at runtime and repeated calls make it fail without a real error). |
 
 ## Traceability
@@ -105,8 +117,38 @@ Notes:
   (`Connection closed`). Usually ADK retries, but sometimes the agent runs without its
   tools (log line `will run without the tools from toolset`) and cases fail for that reason
   alone. In one project, 10 cases at once failed about 1 in 5; groups of 3 had no failures.
+- With `repeats` greater than 1 more runs go at once (ADK's default `--parallelism` is 4).
+  In one project, 12 invocations at the default produced `Connection closed` from the MCP
+  server and ADK ran some without tools, while 8 invocations with `--parallelism 1` produced
+  none (one observation, and slower). Ask for it when invoking the command, for example
+  `/speckit-adk-eval run with --parallelism 1`.
+- A judge with `num_samples: 1` can change its verdict between runs. In one project the same
+  case passed 1 of 4 runs in one execution and 4 of 4 in another; `repeats` shows it, and a
+  higher `num_samples` or a stronger judge model reduces it.
 - If a case fails with an answer like "I cannot query the data right now", rerun it alone
   before changing the prompt. If it passes, it was the connection, not the agent.
+
+- `adk eval` exits with code 1 when any case fails. The command treats that as a result,
+  not an error: it is an execution error only when no new result file was written.
+- If the agent never answers (missing credentials, no access to the model), ADK still
+  writes a result with the cases as FAILED. The summary shows them as `ERROR` and does not
+  count them as agent failures; when all cases are `ERROR` nothing was evaluated.
+- With `repeats` greater than 1, ADK judges each case on all its runs (by default the mean
+  score against the threshold). A case can pass and still be flagged `UNSTABLE`. For other
+  rules (for example "at least 4 of 5 runs") add `multi_run_config` with `cross_run_criteria`
+  to `test_config.json`.
+- The provenance describes the main agent folder and evalset; the agent package and
+  evalset of a simulated-service variant are not hashed.
+- `eval-report.md` is the current report and is replaced on every run. `eval-history.md`
+  keeps one row per run (date, commit, passed, failed, unstable, repeats, tokens). The
+  report ends with the provenance of the run: commit (and whether the tree had
+  uncommitted changes), ADK version, hashes of the evalset, the test configuration and the
+  agent package, judge model, agent model found in the code (a text search: it can miss
+  one), repeats and date.
+- The cost line adds up the model calls, tool calls, tokens and time ADK records for the
+  agent over all invocations of all runs. It does not include the judge's calls.
+- The summary reads every result written by the invocation (`--since`), so several
+  evalsets, including simulated-service variants, appear in one report.
 
 ## Scenarios that need a simulated service
 
@@ -128,7 +170,7 @@ hand. Until then `review` reports them as `MISSING`, which is expected.
 
 - Validated on **one project** and one MCP server. Behaviour with other servers, tool types
   or specs in other layouts is unknown.
-- Specific to ADK 2.13: evalset format and criteria change between versions.
+- Specific to ADK 2.15: evalset format and criteria change between versions.
 - Skills and several design options are mentioned but only the common patterns were
   exercised.
 
