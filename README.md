@@ -118,6 +118,9 @@ Notes:
 
 - `adk eval` exits with code 1 when any case fails. The command treats that as a result,
   not an error: it is an execution error only when no new result file was written.
+- If the agent never answers (missing credentials, no access to the model), ADK still
+  writes a result with the cases as FAILED. The summary shows them as `ERROR` and does not
+  count them as agent failures; when all cases are `ERROR` nothing was evaluated.
 - With `repeats` greater than 1, ADK judges each case on all its runs (by default the mean
   score against the threshold). A case can pass and still be flagged `UNSTABLE`. For other
   rules (for example "at least 4 of 5 runs") add `multi_run_config` with `cross_run_criteria`

@@ -16,6 +16,10 @@
   results.
 - `summarize_results.py`: adds a `Cost` line (agent model calls, tool calls, tokens and
   time over all invocations of all runs; the judge is not included).
+- `summarize_results.py`: a case with no invocation (ADK writes it as FAILED when the agent
+  never answers, for example without credentials) is shown as ERROR, not counted as an
+  agent failure; exit 2 when every case is an ERROR. Found in a real run without
+  credentials.
 - Add `eval_provenance.py`: commit, hashes of evalset, test config and agent package,
   judge and agent models, repeats and date.
 - `eval` writes the provenance and cost in `eval-report.md` and appends a row to

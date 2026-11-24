@@ -14,7 +14,13 @@ and is marked UNSTABLE when some runs passed and some did not. The case status i
 ADK's verdict over all its runs. A final `Cost` line adds up the agent's model calls,
 tool calls, tokens and duration over all invocations of all runs.
 
-Exit code: 0 every case passed, 1 any case did not pass, 2 bad usage or no results.
+A case with no invocation in any of its runs did not reach the agent (missing
+credentials, model access, configuration): ADK still writes it as FAILED. It is shown as
+ERROR and is not counted as an agent failure. When every case is an ERROR, nothing was
+evaluated.
+
+Exit code: 0 every case passed, 1 any case did not pass, 2 bad usage, no results or
+nothing evaluated (every case ERROR).
 """
 
 import json
@@ -43,6 +49,7 @@ class Row:
     answer: str
     runs: int = 1
     passed_runs: int | None = None
+    errored: bool = False
 
     @property
     def unstable(self) -> bool:
@@ -109,6 +116,11 @@ def _case_runs(result: dict) -> dict[str, list[dict]]:
     return runs
 
 
+def _did_not_run(case: dict) -> bool:
+    """Return True when the run has no invocation: the agent never answered."""
+    return not case.get("eval_metric_result_per_invocation")
+
+
 def summarize(result: dict) -> list[Row]:
     """Return one Row per case, sorted by id.
 
@@ -133,7 +145,12 @@ def summarize(result: dict) -> list[Row]:
             n_runs = len(cases)
             passed = sum(not _is_failed(c) for c in cases) if n_runs > 1 else None
         shown = next((c for c in cases if _is_failed(c)), cases[0])
-        rows.append(Row(eval_id, status, metrics, answer_text(shown), n_runs, passed))
+        errored = all(_did_not_run(c) for c in cases)
+        if errored:
+            status = "ERROR"
+        rows.append(
+            Row(eval_id, status, metrics, answer_text(shown), n_runs, passed, errored)
+        )
     return sorted(rows, key=lambda row: row.eval_id)
 
 
@@ -215,7 +232,7 @@ def main(argv: list[str]) -> int:
     if not files:
         print(f"ERROR: no *.evalset_result.json found in {' '.join(map(str, paths))}")
         return 2
-    total = passed = unstable = 0
+    total = passed = unstable = errors = 0
     costs = []
     for file in files:
         try:
@@ -235,8 +252,17 @@ def main(argv: list[str]) -> int:
         total += len(rows)
         passed += sum(row.status == "PASSED" for row in rows)
         unstable += sum(row.unstable for row in rows)
-    line = f"Passed: {passed}  Failed: {total - passed}"
-    print(line + (f"  Unstable: {unstable}" if unstable else ""))
+        errors += sum(row.errored for row in rows)
+    line = f"Passed: {passed}  Failed: {total - passed - errors}"
+    line += f"  Unstable: {unstable}" if unstable else ""
+    print(line + (f"  Errors: {errors}" if errors else ""))
+    if errors:
+        print(
+            "ERROR cases produced no invocation: the agent never answered. Check "
+            "credentials, model access and configuration before judging the agent."
+        )
+    if errors == total:
+        return 2
     if cost := cost_line(merge_costs(costs)):
         print(cost)
     return 1 if passed < total else 0

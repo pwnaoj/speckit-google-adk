@@ -116,3 +116,25 @@ def test_fixture_with_all_cost_metrics_and_duration():
 
 def test_no_cost_metrics_prints_no_cost_line():
     assert module.cost_line(module.cost_totals({"eval_case_results": []})) == ""
+
+
+NO_CREDENTIALS = FIXTURES / "evalset_result_no_credentials.json"
+
+
+def test_case_that_never_ran_is_an_error_not_a_failure(capsys):
+    rows = module.summarize(load(NO_CREDENTIALS))
+    assert [(r.status, r.errored) for r in rows] == [("ERROR", True)]
+    assert module.main(["x", str(NO_CREDENTIALS)]) == 2
+    out = capsys.readouterr().out
+    assert "Passed: 0  Failed: 0  Errors: 1" in out
+    assert "the agent never answered" in out
+
+
+def test_errors_among_other_cases_still_exit_1(tmp_path, capsys):
+    mixed = load(FIXTURE)
+    mixed["eval_case_results"][0]["eval_metric_result_per_invocation"] = []
+    path = tmp_path / "m.evalset_result.json"
+    path.write_text(json.dumps(mixed), encoding="utf-8")
+    assert module.main(["x", str(path)]) == 1
+    out = capsys.readouterr().out
+    assert "us1-sc1 | ERROR" in out and "Passed: 3  Failed: 0  Errors: 1" in out

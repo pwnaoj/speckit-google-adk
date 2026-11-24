@@ -51,17 +51,20 @@ Consider the user input before proceeding (if not empty).
    stop and tell the user to install `google-adk[eval]` or activate its environment.
    If the command fails with `Eval module is not installed`, say the same.
    `adk eval` exits with code 1 when any case fails, so a non-zero code is not an
-   error by itself: it is a result. Decide by the files: if new
-   `*.evalset_result.json` files appeared in `<agent_dir>/.adk/eval_history` since the
-   recorded time, continue to step 8 whatever the exit code. If none appeared, nothing
-   was evaluated (credentials, configuration, import error): show the last lines of the
-   output, report an execution error and do not summarize.
+   error by itself: it is a result. Do not decide by the exit code or by the presence of
+   result files alone: ADK also writes a result file, with the cases as FAILED, when the
+   agent never answered (for example without credentials). Continue to step 8 and let
+   the summary decide. If no result file appeared, report an execution error, show the
+   last lines of the output and stop.
    If other evalsets must also run (for example simulated-service variants), run each
    the same way and keep every agent folder used.
 8. Summarize everything this invocation produced, passing every agent folder used:
    `python3 .specify/extensions/adk/scripts/summarize_results.py <agent_dir>/.adk/eval_history --since <start time>`
    Its exit code is 1 when any case did not pass, which is a result, and 2 when it found
-   no results.
+   no results or when every case is `ERROR` (no invocation: nothing was evaluated). In
+   that case report an execution error, show the last lines of the `adk eval` output, do
+   not write a failure report and do not suggest agent fixes. Some `ERROR` cases among
+   others are reported as such, apart from the failed cases.
 9. Get the provenance of the run:
    `python3 .specify/extensions/adk/scripts/eval_provenance.py --agent-dir <agent_dir> --evalset <evalset> --config <eval_dir>/test_config.json --repeats <repeats> --adk-version <version>`
    where `<version>` is the version printed by `adk --version` (with the same prefix as
