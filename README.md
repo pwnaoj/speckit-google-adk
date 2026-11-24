@@ -5,9 +5,13 @@ Spec-driven development of [Google ADK](https://adk.dev) agents with
 becomes a traceable evaluation case, and the agent architecture is decided in `plan.md`
 before any code is written.
 
-Requires Google ADK 2.15.0 or later. The end-to-end run on a real project was done with
-Spec Kit 1.2.6.dev0, Google ADK 2.13.0 and Claude Code; version 0.2.0 was checked against
-the ADK 2.15.0 source and result format but has not been re-run end to end with a model.
+Requires Google ADK 2.15.0 or later. Version 0.2.0 was run end to end (installed in a Spec
+Kit 1.2.6.dev0 project, `/speckit-adk-eval` run by Claude Code) on one real project with
+Google ADK 2.15.0 and an API key: the normal path, a failing preflight, missing credentials,
+failing cases, unstable cases with `repeats: 4` and a simulated-service variant. Not tested:
+Vertex AI / Enterprise credentials, a `.env`-based key, the Python prerequisites script, the
+full 11-case evalset in one run and the `after_implement` hook. The original example was
+built with ADK 2.13.0 and Spec Kit 1.2.6.dev0.
 Python only. See [Known limitations](#known-limitations).
 
 ## Commands
@@ -113,6 +117,14 @@ Notes:
   (`Connection closed`). Usually ADK retries, but sometimes the agent runs without its
   tools (log line `will run without the tools from toolset`) and cases fail for that reason
   alone. In one project, 10 cases at once failed about 1 in 5; groups of 3 had no failures.
+- With `repeats` greater than 1 more runs go at once (ADK's default `--parallelism` is 4).
+  In one project, 12 invocations at the default produced `Connection closed` from the MCP
+  server and ADK ran some without tools, while 8 invocations with `--parallelism 1` produced
+  none (one observation, and slower). Ask for it when invoking the command, for example
+  `/speckit-adk-eval run with --parallelism 1`.
+- A judge with `num_samples: 1` can change its verdict between runs. In one project the same
+  case passed 1 of 4 runs in one execution and 4 of 4 in another; `repeats` shows it, and a
+  higher `num_samples` or a stronger judge model reduces it.
 - If a case fails with an answer like "I cannot query the data right now", rerun it alone
   before changing the prompt. If it passes, it was the connection, not the agent.
 
@@ -125,6 +137,8 @@ Notes:
   score against the threshold). A case can pass and still be flagged `UNSTABLE`. For other
   rules (for example "at least 4 of 5 runs") add `multi_run_config` with `cross_run_criteria`
   to `test_config.json`.
+- The provenance describes the main agent folder and evalset; the agent package and
+  evalset of a simulated-service variant are not hashed.
 - `eval-report.md` is the current report and is replaced on every run. `eval-history.md`
   keeps one row per run (date, commit, passed, failed, unstable, repeats, tokens). The
   report ends with the provenance of the run: commit (and whether the tree had

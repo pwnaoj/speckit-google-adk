@@ -46,7 +46,8 @@ Consider the user input before proceeding (if not empty).
    eval`: the environment the cases assume (data, services, files) is not ready.
 7. Record the start time (`date +%s`). Then run, from the project root:
    `adk eval <agent_dir> <evalset> --config_file_path <eval_dir>/test_config.json`
-   Add `--num_runs <repeats>` when `repeats` in the configuration is greater than 1.
+   Add `--num_runs <repeats>` when `repeats` in the configuration is greater than 1, and
+   `--parallelism <N>` when the user asks for it (useful with MCP toolsets).
    Use `uv run adk ...` when the project root has a `uv.lock`. If `adk` is not found,
    stop and tell the user to install `google-adk[eval]` or activate its environment.
    If the command fails with `Eval module is not installed`, say the same.

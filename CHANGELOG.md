@@ -20,6 +20,7 @@
   never answers, for example without credentials) is shown as ERROR, not counted as an
   agent failure; exit 2 when every case is an ERROR. Found in a real run without
   credentials.
+- Docs: what was tested end to end, `--parallelism` with MCP toolsets and judge variance.
 - Add `eval_provenance.py`: commit, hashes of evalset, test config and agent package,
   judge and agent models, repeats and date.
 - `eval` writes the provenance and cost in `eval-report.md` and appends a row to
