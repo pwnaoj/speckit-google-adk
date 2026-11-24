@@ -5,7 +5,9 @@ Spec-driven development of [Google ADK](https://adk.dev) agents with
 becomes a traceable evaluation case, and the agent architecture is decided in `plan.md`
 before any code is written.
 
-Tested with Spec Kit 1.2.6.dev0, Google ADK 2.13.0 and Claude Code, on one real project.
+Requires Google ADK 2.15.0 or later. The end-to-end run on a real project was done with
+Spec Kit 1.2.6.dev0, Google ADK 2.13.0 and Claude Code; version 0.2.0 was checked against
+the ADK 2.15.0 source and result format but has not been re-run end to end with a model.
 Python only. See [Known limitations](#known-limitations).
 
 ## Commands
@@ -23,10 +25,13 @@ Helper scripts (standard library only, installed in `.specify/extensions/adk/scr
 ## Requirements
 
 - Spec Kit with the Claude Code integration (scripts in bash or Python are both supported).
-- `google-adk[eval]` 2.13.0 or later: `adk eval` needs the `eval` extra. If the agent uses
+- `google-adk[eval]` 2.15.0 or later: `adk eval` needs the `eval` extra. If the agent uses
   an MCP server, also the `mcp` extra (`google-adk[eval,mcp]`); `eval` does not include it.
-- `GEMINI_API_KEY` in the environment or in a `.env` the agent can find (ADK looks for it
-  from the agent folder up to the project root). Do not commit it.
+- A way to authenticate the model of the agent and of the judge (they share the process
+  environment): an API key (`GEMINI_API_KEY` or `GOOGLE_API_KEY`) or Vertex AI / Enterprise
+  (`GOOGLE_GENAI_USE_ENTERPRISE=true`, `GOOGLE_CLOUD_PROJECT`, a location and application
+  default credentials). `GOOGLE_GENAI_USE_VERTEXAI` still works but is deprecated. ADK loads
+  the first `.env` it finds from the agent folder up to the project root. Do not commit it.
 
 ## Install
 
@@ -71,7 +76,9 @@ Edit `.specify/extensions/adk/adk-config.yml`:
 | `agent_dir` | Folder of the agent package. If empty, the folder proposed in the plan is used. |
 | `model` | Model for newly designed agents. |
 | `eval_dir` | Where evalsets are written (default `tests/eval`). |
-| `criteria` | Criteria for `test_config.json`. The default is `final_response_match_v2` (LLM judge, needs only `GEMINI_API_KEY`). Do not use `response_match_score` for free-text answers: it compares words and fails correct ones. |
+| `criteria` | Criteria for `test_config.json`. The default is `final_response_match_v2` (LLM judge, same authentication as the agent). Do not use `response_match_score` for free-text answers: it compares words and fails correct ones. |
+| `preflight_command` | Optional command that must exit 0 before the evaluation starts (data loaded, API reachable...). Empty by default. |
+| `repeats` | Times each case runs (`adk eval --num_runs`). Default 1. With more, the report shows `k/N` passed runs and marks unstable cases. |
 | `check_tools` | Also check tool calls (off by default: ids resolved at runtime and repeated calls make it fail without a real error). |
 
 ## Traceability
@@ -108,6 +115,15 @@ Notes:
 - If a case fails with an answer like "I cannot query the data right now", rerun it alone
   before changing the prompt. If it passes, it was the connection, not the agent.
 
+- `adk eval` exits with code 1 when any case fails. The command treats that as a result,
+  not an error: it is an execution error only when no new result file was written.
+- With `repeats` greater than 1, ADK judges each case on all its runs (by default the mean
+  score against the threshold). A case can pass and still be flagged `UNSTABLE`. For other
+  rules (for example "at least 4 of 5 runs") add `multi_run_config` with `cross_run_criteria`
+  to `test_config.json`.
+- The summary reads every result written by the invocation (`--since`), so several
+  evalsets, including simulated-service variants, appear in one report.
+
 ## Scenarios that need a simulated service
 
 Scenarios such as "the data service fails" or "the service returns hostile text" cannot run
@@ -128,7 +144,7 @@ hand. Until then `review` reports them as `MISSING`, which is expected.
 
 - Validated on **one project** and one MCP server. Behaviour with other servers, tool types
   or specs in other layouts is unknown.
-- Specific to ADK 2.13: evalset format and criteria change between versions.
+- Specific to ADK 2.15: evalset format and criteria change between versions.
 - Skills and several design options are mentioned but only the common patterns were
   exercised.
 

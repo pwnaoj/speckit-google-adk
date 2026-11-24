@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0
+
+- Requires `google-adk[eval]` 2.15.0 or later.
+- `eval`: checks authentication for any provider (API key, Vertex AI / Enterprise, other)
+  without printing secrets; stops if there is none.
+- `eval`: optional `preflight_command` must pass before evaluating.
+- `eval`: a non-zero exit code of `adk eval` is a result; it is an error only when no new
+  result file appears.
+- `eval`: `repeats` runs each case N times (`--num_runs`); the report shows `k/N` and
+  flags unstable cases.
+- `summarize_results.py`: takes several files or folders and `--since`, so all results of
+  one invocation are summarized; groups repeated runs by case, uses ADK's
+  `multi_run_case_summaries`, knows status 4 (INFORMATIONAL); exits 2 when it finds no
+  results.
+
 ## 0.1.0 (2026-11-02)
 
 - Add `speckit.adk.design` and `speckit.adk.evalset`.

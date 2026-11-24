@@ -94,3 +94,20 @@ def test_design_command_mentions_new_options_and_coverage_check():
     assert "sub_agents" in text
     assert "SkillToolset" in text and "experimental" in text
     assert "Check coverage" in text
+
+
+def test_eval_command_handles_credentials_exit_code_preflight_and_scope():
+    text = (ROOT / "commands" / "eval.md").read_text(encoding="utf-8")
+    assert "GEMINI_API_KEY" in text and "GOOGLE_GENAI_USE_ENTERPRISE" in text
+    assert "preflight_command" in text
+    assert "--since" in text and "--num_runs" in text
+    assert "is a result" in text
+
+
+def test_config_template_declares_new_keys_and_min_adk_version():
+    config = yaml.safe_load(
+        (ROOT / "templates" / "adk-config.template.yml").read_text(encoding="utf-8")
+    )
+    assert config["preflight_command"] == "" and config["repeats"] == 1
+    tool = MANIFEST["requires"]["tools"][0]
+    assert tool["version"] == ">=2.15.0"

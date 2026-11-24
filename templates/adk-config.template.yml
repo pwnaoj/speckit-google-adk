@@ -12,7 +12,8 @@ model: "gemini-flash-latest"
 eval_dir: "tests/eval"
 
 # Criteria written to test_config.json. The default compares the meaning of the
-# answer with an LLM judge; it only needs GEMINI_API_KEY. Do not use
+# answer with an LLM judge; it uses the same authentication as the agent (API key or
+# Vertex AI / Enterprise credentials). Do not use
 # response_match_score for free-text answers: it compares words and scores
 # correct answers very low.
 criteria:
@@ -26,3 +27,13 @@ criteria:
 # Enable it only when tool names and arguments are fully known in advance; ids
 # resolved at runtime, retries and repeated calls make it fail without a real error.
 check_tools: false
+
+# Optional command run from the project root before evaluating. It must exit with 0 when
+# the environment the cases assume is ready (database loaded, API reachable, files in
+# place) and non-zero otherwise; the evaluation does not start if it fails. Leave empty
+# to skip it. Example: "uv run python scripts/check_env.py"
+preflight_command: ""
+
+# Times each case runs (adk eval --num_runs). With more than 1, the report shows how many
+# runs passed (k/N) and marks unstable cases. Each repetition calls the model again.
+repeats: 1
